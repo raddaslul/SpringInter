@@ -1,6 +1,6 @@
 package com.sparta.springinter.service;
 
-import com.sparta.springinter.repository.LoginRepository;
+import com.sparta.springinter.repository.LoginBulletinRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginBulletinService {
 
-    private final LoginRepository loginRepository;
+    private final LoginBulletinRepository loginBulletinRepository;
 }

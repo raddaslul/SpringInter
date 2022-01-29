@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LoginRepository extends JpaRepository<LoginBulletin, Long> {
+public interface LoginBulletinRepository extends JpaRepository<LoginBulletin, Long> {
     List<LoginBulletin> findAllByOrderByModifiedAtDesc();
 }
