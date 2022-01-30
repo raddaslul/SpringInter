@@ -19,12 +19,15 @@ public class LoginComment extends  Timestamped {
     private String comments;
 
     @ManyToOne
-    @JoinColumn(name = "loginbulletin_id")
+    @JoinColumn(name = "bid")
     private LoginBulletin loginBulletin;
-
 
     public void save(LoginBulletin loginBulletin) {
         this.loginBulletin = loginBulletin;
+    }
+
+    public void update(LoginCommentRequestDto requestDto) {
+        this.comments = requestDto.getComments();
     }
 }
 

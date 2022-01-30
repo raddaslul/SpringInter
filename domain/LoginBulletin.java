@@ -18,7 +18,7 @@ import java.util.List;
 public class LoginBulletin extends Timestamped{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;
+    private Long bid;
 
     @Column(nullable = false)
     private String title;
@@ -28,10 +28,8 @@ public class LoginBulletin extends Timestamped{
 
     @OrderBy("id desc")
     @JsonIgnoreProperties({"loginBulletin"})
-    @OneToMany(mappedBy = "loginBulletin", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "loginBulletin", cascade = CascadeType.REMOVE)
     private List<LoginComment> loginComments;
-
-
 
     public LoginBulletin(LoginBulletinRequestDto requestDto) {
         this.title = requestDto.getTitle();

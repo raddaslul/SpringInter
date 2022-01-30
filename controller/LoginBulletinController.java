@@ -30,15 +30,15 @@ public class LoginBulletinController {
     }
 
     // 게시글 상세 조회
-    @GetMapping("/api/loginbulletins/{id}")
-    public Optional<LoginBulletin> getLoginBulletinsDetail(@PathVariable Long id) {
-        return loginBulletinRepository.findById(id);
+    @GetMapping("/api/loginbulletins/{bid}")
+    public Optional<LoginBulletin> getLoginBulletinsDetail(@PathVariable Long bid) {
+        return loginBulletinRepository.findById(bid);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/api/loginbulletins/{id}")
-    public Long deleteLoginBulletin(@PathVariable Long id) {
-        loginBulletinRepository.deleteById(id);
-        return id;
+    @DeleteMapping("/api/loginbulletins/{bid}/logincomments")
+    public Long deleteLoginBulletin(@PathVariable Long bid) {
+        loginBulletinRepository.deleteById(bid);
+        return bid;
     }
 }
