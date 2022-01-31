@@ -7,10 +7,12 @@ import com.sparta.springinter.service.KakaoUserService;
 import com.sparta.springinter.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,15 +30,39 @@ public class UserController {
     // 회원 가입 페이지
     @GetMapping("/user/signup")
     public String signup() {
-        return "signup";
+        return "/signup";
     }
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public String registerUser(SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
+    public String registerUser(@Valid SignupRequestDto requestDto, Errors errors, Model model) {
+        System.out.println("들어오니?");
+        if(errors.hasErrors()){
+            model.addAttribute("requestDto", requestDto);
+
+            Map<String, String> validatorResult = userService.validateHandling(errors);
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+            return "/signup";
+        }
+
+        else if(userService.duple(requestDto.getUsername())){
+            userService.registerUser(requestDto);
+
+        } else {
+            return "/signup";
+        }
         return "redirect:/user/login";
     }
+
+    // 회원 아이디 중복처리
+    @ResponseBody
+    @GetMapping("/user/duple/{username}")
+    public Boolean duple(@PathVariable String username){
+        return userService.duple(username);
+    }
+
 
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {

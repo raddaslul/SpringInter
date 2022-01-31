@@ -1,6 +1,5 @@
 package com.sparta.springinter.repository;
 
-import com.sparta.springinter.domain.LoginBulletin;
 import com.sparta.springinter.domain.LoginComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
