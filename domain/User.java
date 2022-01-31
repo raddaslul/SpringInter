@@ -25,9 +25,20 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true)
+    private Long kakaoId;
 
+    // 일반 로그인 회원
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.kakaoId = null;
+    }
+
+    // 카카로 로그인 회원
+    public User(String username, String password, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.kakaoId = kakaoId;
     }
 }
