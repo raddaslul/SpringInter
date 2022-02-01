@@ -2,52 +2,57 @@ package com.sparta.springinter.controller;
 
 import com.sparta.springinter.domain.LoginBulletin;
 import com.sparta.springinter.domain.LoginComment;
+import com.sparta.springinter.domain.User;
 import com.sparta.springinter.dto.LoginCommentRequestDto;
 import com.sparta.springinter.repository.LoginBulletinRepository;
 import com.sparta.springinter.repository.LoginCommentRepository;
+import com.sparta.springinter.security.UserDetailsImpl;
 import com.sparta.springinter.service.LoginCommentService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/loginbulletins/{bid}")
+@RequestMapping("/api/logincomments")
 public class LoginCommentController {
 
     private final LoginBulletinRepository loginBulletinRepository;
     private final LoginCommentRepository loginCommentRepository;
     private final LoginCommentService loginCommentService;
 
-    // 댓글 작성
-    @PostMapping("/logincomments")
-    public LoginComment createLoginComment(@PathVariable Long bid, @RequestBody LoginComment loginComment) {
+//     댓글 작성
+    @PostMapping("/loginbulletins/{bid}")
+    public Boolean createLoginComment(@PathVariable Long bid, @RequestBody LoginCommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         LoginBulletin loginBulletin = loginBulletinRepository.findById(bid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다." + bid));
-        loginComment.save(loginBulletin);
-
-        return loginCommentRepository.save(loginComment);
+        User user = userDetails.getUser();
+        LoginComment loginComment = loginCommentService.createLoginComment(requestDto, loginBulletin, user);
+        loginCommentRepository.save(loginComment);
+        return true;
     }
 
     // 댓글 조회
 //    @GetMapping("/logincomments")
-//    public List<LoginComment> getLoginComments(@PathVariable String bid) {
-//        return loginCommentRepository.findAllByOrderByModifiedAtDesc();
+//    public Optional<LoginComment> getLoginComments(@PathVariable Long bid) {
+//        return loginCommentRepository.findAllById(bid);
 //    }
 
     // 댓글 수정
-    @PutMapping("/logincomments/{id}")
-    public Long updateLoginCommnet(@PathVariable Long id, @RequestBody LoginCommentRequestDto requestDto, @PathVariable String bid) {
-        loginCommentService.update(id, requestDto);
-        return id;
+    @PutMapping("/{userid}/loginbulletins/{bid}")
+    public Long updateLoginCommnet(@PathVariable Long userId, @RequestBody LoginCommentRequestDto requestDto) {
+        loginCommentService.update(userId, requestDto);
+        return userId;
     }
 
 
     // 댓글 삭제
-    @DeleteMapping("/logincomments/{id}")
-    public Long deleteLoginComment(@PathVariable Long id, @PathVariable String bid) {
+    @DeleteMapping("/{id}/loginbulletins/{bid}")
+    public Boolean deleteLoginComment(@PathVariable Long id, @PathVariable String bid) {
         loginCommentRepository.deleteById(id);
-        return id;
+        return true;
     }
 }

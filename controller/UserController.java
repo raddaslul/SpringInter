@@ -36,7 +36,6 @@ public class UserController {
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
     public String registerUser(@Valid SignupRequestDto requestDto, Errors errors, Model model) {
-        System.out.println("들어오니?");
         if(errors.hasErrors()){
             model.addAttribute("requestDto", requestDto);
 

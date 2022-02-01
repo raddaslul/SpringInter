@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.springinter.domain.User;
+import com.sparta.springinter.domain.UserRoleEnum;
 import com.sparta.springinter.dto.KakaoUserInfoDto;
 import com.sparta.springinter.repository.UserRepository;
 import com.sparta.springinter.security.UserDetailsImpl;
@@ -119,8 +120,9 @@ public class KakaoUserService {
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
+            UserRoleEnum role = UserRoleEnum.USER;
 
-            kakaoUser = new User(nickname, encodedPassword, kakaoId);
+            kakaoUser = new User(nickname, encodedPassword, kakaoId, role);
             userRepository.save(kakaoUser);
         }
         return kakaoUser;

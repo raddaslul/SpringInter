@@ -18,9 +18,25 @@ public class LoginComment extends  Timestamped {
     @Column(nullable = false)
     private String comments;
 
+//    @Column(nullable = false)
+//    private String username;
+//
+//    @Column(nullable = false)
+//    private Long userId;
+
     @ManyToOne
     @JoinColumn(name = "bid")
     private LoginBulletin loginBulletin;
+
+    @ManyToOne
+    @JoinColumn(name = "user")
+    private User user;
+
+    public LoginComment (LoginCommentRequestDto requestDto, LoginBulletin loginBulletin, User user){
+        this.comments = requestDto.getComments();
+        this.user = user;
+        this.loginBulletin = loginBulletin;
+    }
 
     public void save(LoginBulletin loginBulletin) {
         this.loginBulletin = loginBulletin;

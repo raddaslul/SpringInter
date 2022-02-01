@@ -1,6 +1,8 @@
 package com.sparta.springinter.service;
 
+import com.sparta.springinter.domain.LoginBulletin;
 import com.sparta.springinter.domain.LoginComment;
+import com.sparta.springinter.domain.User;
 import com.sparta.springinter.dto.LoginCommentRequestDto;
 import com.sparta.springinter.repository.LoginBulletinRepository;
 import com.sparta.springinter.repository.LoginCommentRepository;
@@ -15,7 +17,6 @@ import javax.transaction.Transactional;
 public class LoginCommentService {
 
     private final LoginCommentRepository loginCommentRepository;
-    private final LoginBulletinRepository loginBulletinRepository;
 
 
     @Transactional
@@ -27,5 +28,9 @@ public class LoginCommentService {
         return loginComment.getId();
     }
 
-
+    public LoginComment createLoginComment(LoginCommentRequestDto requestDto, LoginBulletin loginBulletin, User user) {
+        LoginComment loginComment = new LoginComment(requestDto, loginBulletin, user);
+        loginCommentRepository.save(loginComment);
+        return  loginComment;
+    }
 }

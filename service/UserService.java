@@ -2,6 +2,7 @@ package com.sparta.springinter.service;
 
 
 import com.sparta.springinter.domain.User;
+import com.sparta.springinter.domain.UserRoleEnum;
 import com.sparta.springinter.dto.SignupRequestDto;
 import com.sparta.springinter.repository.UserRepository;
 import lombok.Getter;
@@ -36,7 +37,10 @@ public class UserService {
         // 패스워드 암호화
         String password = passwordEncoder.encode(signuprequestDto.getPassword());
 
-        User user = new User(username, password);
+        // 사용자 Role 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 
@@ -53,18 +57,17 @@ public class UserService {
         return validatorResult;
     }
 
+
+    // 아이디 중복 확인
     public Boolean duple(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
         try{
             if(user.getUsername().equals(username)){
-                System.out.println("중복이다.");
                 return false;
             }
         } catch (NullPointerException e){
-            System.out.println("중복아니다.");
             return true;
         }
-        System.out.println("들어오니?");
         return true;
     }
 }

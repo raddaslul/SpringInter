@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface LoginBulletinRepository extends JpaRepository<LoginBulletin, Long> {
     List<LoginBulletin> findAllByOrderByModifiedAtDesc();
+
 }
