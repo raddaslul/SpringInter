@@ -1,6 +1,5 @@
 package com.sparta.springinter.controller;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.springinter.dto.SignupRequestDto;
 import com.sparta.springinter.service.KakaoUserService;

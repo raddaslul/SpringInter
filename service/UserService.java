@@ -33,7 +33,6 @@ public class UserService {
 //            throw new IllegalArgumentException("중복된 닉네임입니다");
 //        }
 
-
         // 패스워드 암호화
         String password = passwordEncoder.encode(signuprequestDto.getPassword());
 
@@ -43,8 +42,6 @@ public class UserService {
         User user = new User(username, password, role);
         userRepository.save(user);
     }
-
-
 
     // 회원가입 시 유효성 체크
     public Map<String, String> validateHandling(Errors errors) {
@@ -56,7 +53,6 @@ public class UserService {
         }
         return validatorResult;
     }
-
 
     // 아이디 중복 확인
     public Boolean duple(String username) {

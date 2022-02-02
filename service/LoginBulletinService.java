@@ -13,9 +13,8 @@ public class LoginBulletinService {
 
     private final LoginBulletinRepository loginBulletinRepository;
 
-
-        public LoginBulletin createLoginBulletin(LoginBulletinRequestDto requestDto, Long userId, String username) {
-            LoginBulletin loginBulletin = new LoginBulletin(requestDto, userId, username);
+        public LoginBulletin createLoginBulletin(LoginBulletinRequestDto requestDto, Long userId, User user) {
+            LoginBulletin loginBulletin = new LoginBulletin(requestDto, user, userId);
             loginBulletinRepository.save(loginBulletin);
             return loginBulletin;
     }

@@ -2,17 +2,15 @@ package com.sparta.springinter.controller;
 
 import com.sparta.springinter.domain.LoginBulletin;
 import com.sparta.springinter.domain.User;
-import com.sparta.springinter.domain.UserRoleEnum;
 import com.sparta.springinter.dto.LoginBulletinRequestDto;
 import com.sparta.springinter.repository.LoginBulletinRepository;
 import com.sparta.springinter.security.UserDetailsImpl;
 import com.sparta.springinter.service.LoginBulletinService;
-import com.sparta.springinter.service.LoginCommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +26,10 @@ public class LoginBulletinController {
 //    @Secured(UserRoleEnum.Authority.USER)
     @PostMapping("/api/write/loginbulletins")
     public Boolean createLoginBulletin(@RequestBody LoginBulletinRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         Long userId = userDetails.getUser().getUserId();
-        String username = userDetails.getUser().getUsername();
 
-        LoginBulletin loginBulletin = loginBulletinService.createLoginBulletin(requestDto, userId, username);
+        LoginBulletin loginBulletin = loginBulletinService.createLoginBulletin(requestDto, userId, user);
         loginBulletinRepository.save(loginBulletin);
         return true;
     }
@@ -49,9 +47,15 @@ public class LoginBulletinController {
     }
 
     // 게시글 삭제
-    @DeleteMapping("/api/delete/loginbulletins/{bid}")
-    public Boolean deleteLoginBulletin(@PathVariable Long bid) {
-        loginBulletinRepository.deleteById(bid);
-        return true;
+    @Transactional
+    @DeleteMapping("/api/delete/{userId}/loginbulletins/{bid}")
+    public Boolean deleteLoginBulletin(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long bid) {
+        Long loginId = userDetails.getUser().getUserId();
+        if (userId == loginId) {
+            loginBulletinRepository.deleteByBidAndUserId(bid, userId);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

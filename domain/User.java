@@ -35,11 +35,10 @@ public class User {
     @Column(unique = true)
     private Long kakaoId;
 
-
-    @OrderBy("id desc ")
+    @OrderBy("bid desc ")
     @JsonIgnoreProperties({"user"})
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<LoginComment> loginComments;
+    private List<LoginBulletin> loginBulletins;
 
     // 일반 로그인 회원
     public User(String username, String password, UserRoleEnum role) {

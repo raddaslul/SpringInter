@@ -1,11 +1,10 @@
 package com.sparta.springinter.domain;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.springinter.dto.LoginCommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-
 
 @NoArgsConstructor
 @Getter
@@ -13,29 +12,31 @@ import javax.persistence.*;
 public class LoginComment extends  Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;
+    private Long cid;
 
     @Column(nullable = false)
     private String comments;
 
-//    @Column(nullable = false)
-//    private String username;
-//
-//    @Column(nullable = false)
-//    private Long userId;
+    @Column(nullable = false)
+    private Long bid;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private String username;
 
     @ManyToOne
-    @JoinColumn(name = "bid")
+    @JsonIgnore
+    @JoinColumn(name = "bulletin", nullable = false)
     private LoginBulletin loginBulletin;
 
-    @ManyToOne
-    @JoinColumn(name = "user")
-    private User user;
-
-    public LoginComment (LoginCommentRequestDto requestDto, LoginBulletin loginBulletin, User user){
+    public LoginComment (LoginCommentRequestDto requestDto, LoginBulletin loginBulletin, Long bid, Long userId, String username){
         this.comments = requestDto.getComments();
-        this.user = user;
         this.loginBulletin = loginBulletin;
+        this.bid = bid;
+        this.userId = userId;
+        this.username = username;
     }
 
     public void save(LoginBulletin loginBulletin) {

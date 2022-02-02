@@ -1,26 +1,21 @@
 package com.sparta.springinter.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.springinter.dto.LoginBulletinRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-
-
 public class LoginBulletin extends Timestamped{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
+    @Column(name = "bid")
     private Long bid;
 
     @Column(nullable = false)
@@ -32,21 +27,19 @@ public class LoginBulletin extends Timestamped{
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user", nullable = false)
+    private User user;
 
-    @OrderBy("id desc")
+    @OrderBy("cid desc")
     @JsonIgnoreProperties({"loginBulletin"})
     @OneToMany(mappedBy = "loginBulletin", cascade = CascadeType.REMOVE)
     private List<LoginComment> loginComments;
 
-
-
-    public LoginBulletin(LoginBulletinRequestDto requestDto, Long userId, String username) {
+    public LoginBulletin(LoginBulletinRequestDto requestDto, User user, Long userId) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
         this.userId = userId;
-        this.username = username;
-
+        this.user = user;
     }
 }
