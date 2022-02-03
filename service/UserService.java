@@ -5,9 +5,11 @@ import com.sparta.springinter.domain.User;
 import com.sparta.springinter.domain.UserRoleEnum;
 import com.sparta.springinter.dto.SignupRequestDto;
 import com.sparta.springinter.repository.UserRepository;
+import com.sparta.springinter.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -65,5 +67,11 @@ public class UserService {
             return true;
         }
         return true;
+    }
+
+    public Boolean loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            return false;
+        } return true;
     }
 }

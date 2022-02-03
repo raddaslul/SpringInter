@@ -2,9 +2,11 @@ package com.sparta.springinter.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.springinter.dto.SignupRequestDto;
+import com.sparta.springinter.security.UserDetailsImpl;
 import com.sparta.springinter.service.KakaoUserService;
 import com.sparta.springinter.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -24,6 +26,12 @@ public class UserController {
     @GetMapping("/user/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/user/logincheck")
+    @ResponseBody
+    public Boolean loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.loginCheck(userDetails);
     }
 
     // 회원 가입 페이지
@@ -58,6 +66,7 @@ public class UserController {
     @ResponseBody
     @GetMapping("/user/duple/{username}")
     public Boolean duple(@PathVariable String username){
+
         return userService.duple(username);
     }
 
