@@ -69,6 +69,7 @@ public class UserService {
         return true;
     }
 
+    // 로그인 중복여부 체크
     public Boolean loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails != null) {
             return false;
