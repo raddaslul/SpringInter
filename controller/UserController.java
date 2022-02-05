@@ -37,7 +37,13 @@ public class UserController {
     // 회원 가입 페이지
     @GetMapping("/user/signup")
     public String signup() {
-        return "/signup";
+        return "signup";
+    }
+
+    @GetMapping("/user/signcheck")
+    @ResponseBody
+    public Boolean signupCheck(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.loginCheck(userDetails);
     }
 
     // 회원 가입 요청 처리
@@ -50,14 +56,14 @@ public class UserController {
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            return "/signup";
+            return "signup";
         }
 
         else if(userService.duple(requestDto.getUsername())){
             userService.registerUser(requestDto);
 
         } else {
-            return "/signup";
+            return "signup";
         }
         return "redirect:/user/login";
     }
